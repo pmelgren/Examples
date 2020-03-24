@@ -1,0 +1,15 @@
+[submodule "clautoscraper"]
+	path = clautoscraper
+	url = https://github.com/pmelgren/clautoscraper.git
+[submodule "gameTracker"]
+	path = gameTracker
+	url = https://github.com/pmelgren/gameTracker.git
+[submodule "Hive_to_FWF"]
+	path = Hive_to_FWF
+	url = https://github.com/pmelgren/Hive_to_FWF.git
+[submodule "NCAABasketball"]
+	path = NCAABasketball
+	url = https://github.com/pmelgren/NCAABasketball.git
+[submodule "BaseballDatabase"]
+	path = BaseballDatabase
+	url = https://www.github.com/pmelgren/BaseballDatabase.git
