@@ -4,6 +4,7 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State, ALL
 import plotly.express as px
+import numpy as np
 import pandas as pd
 import glob
 
@@ -16,21 +17,18 @@ import glob
 def make_table(dfs):
     
     # table header
-    rows = [html.Tr([html.Th(v) for v in ['Frequency','Velocity','Filename','']])]
+    rows = [html.Tr([html.Th('Filename'),html.Th('')])]
     
-    # loop through each row of the dataframe and create a list of the Html objects to make that row
-    for i in dfs.index:
-        if dfs.loc[i,'display'] == True:
-            row = []
-            
-            # loop through Frequency, Velocity, and filename to add the cellof the table
-            for col in ['Frequency','Velocity','Filename']:
-                row.append(html.Td(children=dfs.loc[i,col]))
-                
-            # add an html button to remove the file data 
-            row.append(html.Button('Remove File Data', n_clicks=0
-                                   ,id = {'type': 'table-button', 'index': str(i)}))
-            rows.append(html.Tr(row))
+    # loop through each unique filename and create a list of the Html objects to make that row
+    for i,f in enumerate(dfs.loc[dfs.display == True,'Filename'].unique()):
+        
+        # add the filename to the row with coloring 
+        colornum= 255/(len(dfs.loc[dfs.display == True,'Filename'].unique()))*(i+1)
+        row = [html.Th(f,style = {'color':'rgb('+str(colornum)+',100,'+str(255-colornum)+')'})]                
+        # add an html button to remove the file data 
+        row.append(html.Button('Remove File Data', n_clicks=0
+                               ,id = {'type': 'table-button', 'value': f}))
+        rows.append(html.Tr(row))
     return(rows)
 
 # create the plot of the Velocity grouped by Frequency
@@ -99,15 +97,15 @@ app.layout = dbc.Container([
 # the button that was clicked
 @app.callback(
     Output('intermediate-value','children')
-    ,[Input({'type': 'table-button', 'index': ALL}, 'n_clicks')]
+    ,[Input({'type': 'table-button', 'value': ALL}, 'n_clicks')]
     ,[State('intermediate-value','children')]
 )
 def update_data(clicks,json_dat):
     # clicks is a list of numbers representing each button in the table. The one that was clicked should be 1
     if sum(clicks) > 0:
         ddf = pd.read_json(json_dat) # create a dataframe out of the data in the hidden Div
-        ddf = ddf.loc[ddf.display == True,:].reset_index(drop = True) #remove rows not displayed and reset index
-        files_to_hide = ddf.loc[pd.Series(clicks) > 0,'Filename'] #determine which filenames need to be hidden
+        ddf = ddf.loc[ddf.display == True,:] #remove rows not displayed and reset index
+        files_to_hide = ddf.Filename.unique()[np.array(clicks) > 0]
         ddf.loc[ddf.Filename.isin(files_to_hide),'display'] = False # set display to false for the filenames to hide
         return ddf.to_json() # write the updated data back to the hidden Div object
     else:
