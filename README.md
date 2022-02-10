@@ -19,4 +19,4 @@ Each of the repositories in the list below can be explored further via this repo
 - #### [NCAABasketball](https://github.com/pmelgren/NCAABasketball)
     NCAABasketball is an anonymized version of another freelancing contract where I was asked to mine and analyze NCAA basketball information.
 
-Most of these projects are just a small tast of what I can offer. Unfortunately, my best work is usually NDA protected. But I still think there is more than enough here to give you an idea of what I am capable of. Thanks for having a look!
+Most of these projects are just a small taste of what I can offer. Unfortunately, my best work is usually NDA protected. But I still think there is more than enough here to give you an idea of what I am capable of. Thanks for having a look!
